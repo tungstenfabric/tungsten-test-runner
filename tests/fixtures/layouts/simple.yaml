@@ -1,0 +1,10 @@
+# bare minimum test layout description
+- module:
+    name: test_module
+    component: test_component
+    scons:
+      targets:
+        - scons_target_1
+        - scons_target_2
+    driver:
+      fake1: {}

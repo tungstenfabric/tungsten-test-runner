@@ -1,0 +1,4 @@
+pbr
+oslo.concurrency
+voluptuous
+lxml

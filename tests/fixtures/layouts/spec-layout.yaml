@@ -1,0 +1,45 @@
+# layout from the initial spec
+- module:
+    # the name of the module being tested - has to be unique across all
+    # projects
+    name: bfd
+    # a component this module is a part of - all modules that are part of
+    # the component will be run when one of them changes.
+    component: control
+    scons:
+      # a list of SCons targets to run before we execute tests.
+      targets:
+        - controller/src/bfd:test
+        - controller/src/bfd/rest_api:test
+    driver:
+      # python module used to execute tests - this allows us adding support
+      # for additional languages relatively simply, and manage execution on
+      # a per-module basis.
+      gtest:
+        # Whether tests for this module can be safely executed in parallel.
+        # Test scheduler will group tests into those that can, and run them
+        # all in parallel, and then will run all tests that are unsafe in
+        # sequence.
+        parallel: False
+        # For GoogleTest-based tests, a list binaries to execute is provided.
+        test_suites:
+          - ^bfd/tests/.*_test$
+          - ^bfd/rest_api/tests/.*_test$
+        # Test overrides
+        test_overrides:
+          # This override skips execution of all the binaries listed. This
+          # list can be either a string or a regular expression.
+          - file_matchers:
+              - ^bfd/rest_api/bfd_config_test$
+            disabled: True
+          # This override specifies that tests from the `bfd_session_test`
+          # test suite matching the specified regular expression should
+          # be considered flaky, with the execution strategy of `Pass3of5`
+          # meaning that the test will be executed 5 times, and considered
+          # to be passing only when 3 of those runs succeed.
+          - file_matchers:
+              - ^bfd/test/bfd_session_test$
+            test_matchers:
+              - ^.*PollSendTest$
+            flaky:
+              strategy: Pass3of5

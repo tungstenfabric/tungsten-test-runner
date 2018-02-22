@@ -1,0 +1,6 @@
+coverage
+fixtures
+mock
+testtools
+testrepository
+os-testr
