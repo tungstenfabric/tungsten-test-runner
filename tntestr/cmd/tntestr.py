@@ -108,7 +108,9 @@ class TungstenTestRunner(object):
             if len(line) == 0 or line[0] != '{':
                 logging.debug("Not a valid JSON: '%s'", line)
                 continue
-            self.tests += [json.loads(line)]
+            test_details = json.loads(line)
+            if test_details['matched']:
+                self.tests += [test_details]
         for test in self.tests:
             key = self._get_relative_path(test['node_path'])
             self.test_results[key] = {"result": "SUCCESS", "details": []}
