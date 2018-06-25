@@ -272,16 +272,18 @@ XML Log:        {{ test.xml_path }}
 Console Log:    {{ test.log_path }}
 
 Details:
-{% for test_suite in test.tests %}
-{% for test_case in test_suite.test_cases %}
+{% for test_suite in test.tests -%}
+{% for test_case in test_suite.test_cases -%}
 {% if test_case.failures | length > 0 %}
 {{- test_suite.name }}.{{- test_case.name }} - FAILED
 {% for failure in test_case.failures %}
 {{- failure.data -}}
 {%- endfor -%}
+{% elif test_case.status == "notrun" -%}
+{{- test_suite.name }}.{{- test_case.name }} - SKIPPED
 {% else %}
 {{- test_suite.name }}.{{- test_case.name }} - SUCCESS
-{% endif %}
+{% endif -%}
 {% endfor -%}
 {% endfor -%}
 {% endfor -%}
