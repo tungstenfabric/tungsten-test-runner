@@ -5,7 +5,6 @@ import typing
 from typing import Dict  # noqa
 
 from tntestr import driver
-from tntestr import scheduler
 from tntestr import strategy
 
 
@@ -14,14 +13,8 @@ class Registry(object):
     log = logging.getLogger("tntestr.Registry")
 
     def __init__(self):
-        self.drivers = {}  # type: Dict[str, typing.Type[driver.BaseDriver]]
-        self.schedulers = {}  # type: Dict[str, typing.Type[scheduler.BaseScheduler]]
-        self.strategies = {}  # type: Dict[str, typing.Type[strategy.BaseStrategy]]
-
-    def register_scheduler(self, scheduler_obj: typing.Type[scheduler.BaseScheduler]):
-        if scheduler_obj.name in self.drivers:
-            raise Exception("Scheduler {} already registered.", scheduler_obj.name)
-        self.schedulers[scheduler_obj.name] = scheduler_obj
+        self.drivers : Dict[str, typing.Type[driver.BaseDriver]] = {}
+        self.strategies : Dict[str, typing.Type[strategy.BaseStrategy]] = {}
 
     def register_driver(self, driver_obj: typing.Type[driver.BaseDriver]):
         if driver_obj.name in self.drivers:
@@ -32,11 +25,6 @@ class Registry(object):
         if strategy_obj.name in self.strategies:
             raise Exception("Strategy {} already registered.", strategy_obj.name)
         self.strategies[strategy_obj.name] = strategy_obj
-
-    def get_scheduler(self, name: str) -> typing.Type[scheduler.BaseScheduler]:
-        if name not in self.schedulers:
-            raise RuntimeError("Unknown scheduler: %s", name)
-        return self.schedulers[name]
 
     def get_driver_schemas(self) -> vs.Schema:
         schema = {}

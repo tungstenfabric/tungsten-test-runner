@@ -36,12 +36,3 @@ class SconsExecutor(object):
             execute(cmd, env_variables=env_copy)
         except RuntimeError as e:
             raise SconsBuildError(e)
-
-
-    def get_test_targets(self):
-        """Returns a list of test targets defined for the project.
-
-        This method returns a list of all tests targets known to SCons.
-        """
-        arguments = ["--list-test-targets"]
-

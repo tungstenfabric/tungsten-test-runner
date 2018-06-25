@@ -27,12 +27,12 @@ class Component(object):
 
 class Module(object):
     def __init__(self):
-        self.config_file = None  # type: str
+        self.config_file : str = None
         self.line = 0
-        self.name = None  # type: str
-        self.component = None  # type: Component
-        self.scons = None  # type: Scons
-        self.driver = None  # type: driver.BaseDriver
+        self.name : str = None
+        self.component : Component = None
+        self.scons : Scons = None
+        self.driver : driver.BaseDriver = None
 
     @staticmethod
     def get_schema(registry: registry.Registry) -> vs.Schema:
@@ -58,13 +58,13 @@ class TestLayout(object):
         self.log = logging.getLogger("tntestr.TestLayout")
         self.layout_yalm = layout_yaml
 
-        self.modules = {}  # type: Dict[str, Module]
-        self.components = {}  # type: Dict[str, Component]
+        self.modules : Dict[str, Module] = {}
+        self.components : Dict[str, Component] = {}
 
     def extend_layout(self, config_file: str, layout_buf: str) -> None:
         """Add additional tests from YAML"""
         layout = yaml.safe_load(layout_buf)
-        self.modules = None  # type: List[Module]
+        self.modules : List[Module] = None
 
         for item in layout:
             if len(item.keys()) > 1 or 'test' not in item:

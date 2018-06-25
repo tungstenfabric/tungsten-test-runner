@@ -20,9 +20,11 @@ of CI jobs to ensure that they pass.
 
 ## Proposed Change
 
-This spec proposes a brand new test runner thar provides a unified way
-to gather and run a list of tests based on the review, with the following
+This spec proposes a new test runner thar provides a unified way to gather
+and run a list of tests based on the review, with the following
 improvements:
+
+  - Running tests concurrently in an isolated environment
 
   - Cleaner console output, printing the name of the ran test and its status.
 
@@ -31,7 +33,7 @@ improvements:
  
   - Handling test flakiness, both by providing a way to rerun failed tests
     as well as denoting tests, specifying conditions when the test should
-    fail the job. 
+    fail the job.
     
   - Gathering and processing core files for tests, giving developers
     additional tools to debug test failures in CI.
@@ -57,7 +59,6 @@ mappings in a single review.
 The proposed layout of the `tests.yaml` file can be seen below:
 
 ```yaml
-
 - module:
     # the name of the module being tested - has to be unique across all
     # projects
@@ -113,7 +114,7 @@ of how tests should be executed - the TestRunner module, per-test overrides
 
 ### User Interface
 
-`octestr` script is the main entry point of the test runner. It can be used
+`tntestr` script is the main entry point of the test runner. It can be used
 to run both the entire test collection, as well as test suites for specific
 modules, and even single test cases.
 
@@ -165,21 +166,6 @@ as multiplexing stdout to print progress to the user.
 By default all tests coming from the same testsuite (python package,
 gtest binary) are run sequentially, but that can be changed on the per-module
 level.
-
-#### SeriesScheduler
-
-This scheduler runs tests one at the time, waiting for each one to terminate
-before starting the next one.
-
-#### NumberScheduler
-
-This scheduler has a static number of slots used to execute tests, and will
-execute as many tests as it can in parallel.
-
-#### UtilizationScheduler
-
-This scheduler keeps track of the resource utilization and tries to run as
-many tests as possible, trying to keep the node from overloading.
 
 ### Test Retrying
 
