@@ -148,7 +148,14 @@ class TungstenTestRunner(object):
         status = TestResult.SUCCESS
         test_suites = []
         suite_objs = []
-        suites = soup.findall("testsuite")
+
+        # check if the root tag is testsuite, and if not, find
+        # all testsuite tags under the root tag.
+        if soup.tag == 'testsuite':
+            suites = [soup]
+        else:
+            assert soup.tag == 'testsuites'
+            suites = soup.findall("testsuite")
 
         for suite in suites:
             if int(suite.attrib["errors"]) > 0 or int(suite.attrib["failures"]) > 0:
