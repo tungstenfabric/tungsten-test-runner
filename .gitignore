@@ -1,0 +1,9 @@
+/.idea
+/Vagrantfile
+
+/.eggs
+/.mypy_cache/
+/.testrepository/
+/.vagrant/
+*__pycache__/
+/*.egg-info

@@ -1,0 +1,5 @@
+pbr
+oslo.concurrency
+voluptuous
+lxml
+jinja2
