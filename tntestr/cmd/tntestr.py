@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3.5
 
 import os
 import random
@@ -192,20 +192,21 @@ class TungstenTestRunner(object):
         key = self._get_relative_path(suite['node_path'])
         xml_basepath = self._get_relative_path(os.path.splitext(suite['xml_path'])[0])
         log_basepath = self._get_relative_path(os.path.splitext(suite['log_path'])[0])
+        rnd_suffix_len = 8
 
         # If there is no log file, assume a total failure and store that info.
         if not os.path.exists(suite['log_path']):
             result = TestResult.MISSING_LOG
 
         while True:
-            random_string = "".join(random.choices(string.ascii_lowercase, k=8))
+            random_string = "".join([random.choice(string.ascii_lowercase) for i in range(rnd_suffix_len)])
             xml_path = xml_basepath + "." + random_string + ".xml"
             log_path = log_basepath + "." + random_string + ".log"
             if not (os.path.exists(xml_path) or os.path.exists(log_path)):
                 break
 
         os.rename(suite['xml_path'], xml_path)
-        os.rename(suite['log_path'], log_path)           
+        os.rename(suite['log_path'], log_path)
 
         result_text = "SUCCESS" if result == TestResult.SUCCESS else "FAILURE"
         if result > TestResult.SUCCESS:

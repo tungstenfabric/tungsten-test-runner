@@ -255,9 +255,8 @@ manually by executing the `tox` test runner, and gtest binaries directly) the
 SCons-based testing will no longer be possible.
 
 Test Runner will be distributed through https://pypi.python.org/ and will run
-on Ubuntu 16.10+, CentOS/RHEL 7.4+ (with EPEL repositories) and any other
-distribution that has access to Python 3.6.3+ (this includes Ubuntu 16.04,
-for which we'll backport python3.6 and related packages).
+on Ubuntu 16.04+, CentOS/RHEL 7.4+ (with EPEL repositories) and any other
+distribution that has access to Python 3.5.2+.
 
 To help developers transition to the new test execution model, all existing
 `:test` targets will print the instructions on how to execute tests using
