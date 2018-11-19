@@ -205,8 +205,15 @@ class TungstenTestRunner(object):
             if not (os.path.exists(xml_path) or os.path.exists(log_path)):
                 break
 
-        os.rename(suite['xml_path'], xml_path)
-        os.rename(suite['log_path'], log_path)
+        if os.path.exists(suite['xml_path']):
+            os.rename(suite['xml_path'], xml_path)
+        else:
+            logging.warning('{} does not exist!'.format(suite['xml_path']))
+
+        if os.path.exists(suite['log_path']):
+            os.rename(suite['log_path'], log_path)
+        else:
+            logging.warning('{} does not exist!'.format(suite['log_path']))
 
         result_text = "SUCCESS" if result == TestResult.SUCCESS else "FAILURE"
         if result > TestResult.SUCCESS:
