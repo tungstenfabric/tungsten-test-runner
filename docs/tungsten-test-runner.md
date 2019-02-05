@@ -1,3 +1,8 @@
+# NOTE: This is a initial specification document for the test runner. The implementation greatly differs from what is specified here.
+
+  Consult the [README.md](https://github.com/tungstenfabric/tungsten-test-runner/blob/master/README.md)
+  file for a more up-to-date documentation.
+
 # Contrail Unified Test Runner
 
 Create a unified test runner that can run tests in parallel, handle flakiness
