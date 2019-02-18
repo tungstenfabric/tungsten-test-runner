@@ -126,8 +126,8 @@ class TungstenTestRunner(object):
         command = ["scons", "--keep-going"] + targets
         logging.info("Executing SCons command: %s", " ".join(command))
         rc = execute(command, scons_env,
-                     lambda x: print(x.decode('utf-8'), file=sys.stdout, end=''),
-                     lambda x: print(x.decode('utf-8'), file=sys.stderr, end=''))
+                     lambda x: print(x.decode('utf-8', 'backslashreplace'), file=sys.stdout, end=''),
+                     lambda x: print(x.decode('utf-8', 'backslashreplace'), file=sys.stderr, end=''))
         if rc > 0: 
             logging.info("SCons failed. Analyzing results.")
         else:
