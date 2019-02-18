@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.5
+#!/usr/bin/env python3
 
 import os
 import random
@@ -26,7 +26,7 @@ async def _read_stream(stream, cb):
 
 async def _stream_subprocess(cmd, environment, stdout_cb, stderr_cb):  
     process = await asyncio.create_subprocess_exec(*cmd, env=environment,
-            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, limit=1048576) # 1MB
 
     await asyncio.wait([
         _read_stream(process.stdout, stdout_cb),
