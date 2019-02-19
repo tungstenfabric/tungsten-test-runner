@@ -10,9 +10,8 @@ import argparse
 import subprocess
 import string
 import logging
+import shutil
 from lxml import etree
-
-from collections import OrderedDict
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -102,7 +101,9 @@ class TungstenTestRunner(object):
 
     def describe_tests(self):
         logging.info("Gathering tests for the following targets: %s", (self.args.targets))
-        command = ["scons", "--describe-tests"] + self.args.targets
+        command = [shutil.which("python2"),
+                   shutil.which("scons"),
+                   "--describe-tests"] + self.args.targets
         lines = subprocess.check_output(command).decode('utf-8').split("\n")
         for line in lines:
             if len(line) == 0 or line[0] != '{':
@@ -123,7 +124,9 @@ class TungstenTestRunner(object):
         scons_env = os.environ.copy()
         if not self.args.strict:
             scons_env['NO_HEAPCHECK'] = '1'
-        command = ["scons", "--keep-going"] + targets
+        command = [shutil.which("python2"),
+                   shutil.which("scons"),
+                   "--keep-going"] + targets
         logging.info("Executing SCons command: %s", " ".join(command))
         rc = execute(command, scons_env,
                      lambda x: print(x.decode('utf-8', 'backslashreplace'), file=sys.stdout, end=''),
