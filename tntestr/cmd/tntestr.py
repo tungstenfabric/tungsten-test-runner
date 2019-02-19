@@ -219,8 +219,7 @@ class TungstenTestRunner(object):
             logging.warning('{} does not exist!'.format(suite['log_path']))
 
         result_text = "SUCCESS" if result == TestResult.SUCCESS else "FAILURE"
-        if result > TestResult.SUCCESS:
-            self.test_results[key]['result'] = "FAILURE"
+        self.test_results[key]['result'] = result_text
         self.test_results[key]["details"] += [{
             "result": result,
             "xml_path": xml_path,
@@ -307,13 +306,21 @@ Details:
 {% endfor -%}
 {% endfor -%}
 """
+        text = ''
         template = jinja2.Template(tpl)
         ctx = {
             "scons_targets": self.args.targets,
             "scons_rc": scons_rc,
             "final_result": final_result,
             "results": self.test_results}
-        text = template.render(ctx)
+        try:
+            text = template.render(ctx)
+        except Exception as e:
+            print('Unit test report generation failed!')
+            print('The exception is ignored to allow the job to successfully finish if no tests '
+                  'failed.')
+            print('See https://contrail-jws.atlassian.net/browse/JD-475 for more information.')
+            print(e)
         print(text)
 
 def main():
