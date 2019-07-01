@@ -64,7 +64,7 @@ class TestSuite:
     @property
     def failed(self):
         return any([t.status != "run" for t in self.test_cases])
-        
+
 
 class TestCase:
     def __init__(self, name):
@@ -73,6 +73,7 @@ class TestCase:
         self.status = None
         self.time = None
         self.failures = []
+
 
 class TestFailure:
     def __init__(self):
@@ -91,9 +92,12 @@ class TungstenTestRunner(object):
         parser = argparse.ArgumentParser(description="Tungsten Test Runner")
         parser.add_argument("--debug", dest="debug", action="store_true")
         parser.add_argument("--less-strict", dest="strict", action="store_false")
+        parser.add_argument("-j", help="Allow N jobs at once for scons run.", dest="job_count", type=int)
         parser.add_argument("targets", type=str, nargs="+")
 
         self.args = parser.parse_args()
+        if not self.args.job_count:
+            self.args.job_count = os.cpu_count()
 
     def _get_relative_path(self, path):
         rel_start = path.find("build/")
@@ -126,6 +130,7 @@ class TungstenTestRunner(object):
             scons_env['NO_HEAPCHECK'] = '1'
         command = [shutil.which("python2"),
                    shutil.which("scons"),
+                   "-j", str(self.args.job_count),
                    "--keep-going"] + targets
         logging.info("Executing SCons command: %s", " ".join(command))
         rc = execute(command, scons_env,
